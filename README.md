@@ -212,86 +212,12 @@ Prometheus metrics at `/metrics` — drop into Grafana with the included dashboa
 
 ## 🏗️ Architecture
 
-```
 <p align="center">
   <img src="zyntraops_architecture.svg" alt="ZyntraOps Architecture" width="900"/>
 </p>
 <p align="center">
   End-to-end flow of ZyntraOps AI-powered SRE system
 </p>
-
-
-
-
-
-
-
-┌──────────────────────────────────────────────────────────────────┐
-│                        Kubernetes Cluster                        │
-│               Pods · Logs & Metrics · Events                     │
-│                    k8s/  ·  k8s_tools.py                        │
-└───────────────────────────────┬──────────────────────────────────┘
-                                │  pod failure event
-                                ▼
-                    ┌───────────────────────┐
-                    │    Detection Layer    │
-                    │       detection/      │
-                    │  Watches K8s events,  │
-                    │  detects pod failures │
-                    └───────────┬───────────┘
-                                │
-                                ▼
-                ┌───────────────────────────────┐
-                │   Async Queue + Orchestrator  │
-                │      main.py  ·  agent/       │
-                │   Event flow & pipeline start │
-                └───────────────┬───────────────┘
-                                │
-   ╔════════════════════════════▼══════════════════════════════╗
-   ║                 Investigation Pipeline                    ║
-   ║                                                           ║
-   ║  ┌──────────────────┐  ┌──────────────┐  ┌────────────┐ ║
-   ║  │ Evidence         │  │ Rule Engine  │  │ AI Engine  │ ║
-   ║  │ Collector        │→ │ pattern_     │→ │   ai/      │ ║
-   ║  │ evidence_        │  │ layer.py     │  │ Ollama /   │ ║
-   ║  │ collector.py     │  │              │  │ OpenAI /   │ ║
-   ║  └──────────────────┘  └──────────────┘  │ Anthropic  │ ║
-   ║                                           └─────┬──────┘ ║
-   ║                      ┌────────────────────────┐ │        ║
-   ║                      │    Decision Engine     │◄┘        ║
-   ║                      │  services/decision.py  │          ║
-   ║                      │  agent/decision_engine │          ║
-   ║                      │  Rule + AI → safe pick │          ║
-   ║                      └────────────────────────┘          ║
-   ╚════════════════════════════╤══════════════════════════════╝
-                                │
-                     ┌──────────▼──────────┐
-                     │     Safety Gate     │
-                     │ safety_guardrails.py│
-                     │ rate · risk · approv│
-                     └──────────┬──────────┘
-                                │
-                  ┌─────────────▼─────────────┐
-                  │     Remediation Engine    │
-                  │    infrastructure/        │
-                  │    remediation.py         │
-                  │ restart · scale · rollback│
-                  └────┬──────────┬───────┬───┘
-                       │          │       │
-          ┌────────────▼─┐  ┌─────▼────┐ ┌▼──────────────┐
-          │  PostgreSQL  │  │   API    │ │ Notifications  │
-          │   models/    │  │  api/    │ │notifications/  │
-          │ migrations/  │  │ FastAPI  │ │     Slack      │
-          └──────────────┘  │   + WS   │ └────────────────┘
-                            └────┬─────┘
-                   ┌─────────────┴───────────┐
-            ┌──────▼──────┐         ┌────────▼───────┐
-            │  React UI   │         │ Observability  │
-            │ dashboard/  │         │observability/  │
-            │live incidents│        │  Prometheus    │
-            └─────────────┘         └────────────────┘
-```
-
 ---
 
 ## 🚀 Quick Start
