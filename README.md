@@ -213,6 +213,19 @@ Prometheus metrics at `/metrics` — drop into Grafana with the included dashboa
 ## 🏗️ Architecture
 
 ```
+<p align="center">
+  <img src="zyntraops_architecture.svg" alt="ZyntraOps Architecture" width="900"/>
+</p>
+<p align="center">
+  End-to-end flow of ZyntraOps AI-powered SRE system
+</p>
+
+
+
+
+
+
+
 ┌──────────────────────────────────────────────────────────────────┐
 │                        Kubernetes Cluster                        │
 │               Pods · Logs & Metrics · Events                     │
