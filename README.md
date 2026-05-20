@@ -311,7 +311,7 @@ docker compose up -d --build
 
 | Container | Role |
 |---|---|
-| `sentinelops-backend` | FastAPI + investigation engine |
+| `ZyntraOps-backend` | FastAPI + investigation engine |
 | `postgres` | Incident + audit storage |
 | `prometheus` | Metrics scraping |
 | `dashboard` | React frontend on `:3000` |
@@ -328,7 +328,7 @@ docker compose ps
 curl http://localhost:8080/ready
 
 # Tail live logs
-docker logs -f sentinelops-backend
+docker logs -f ZyntraOps-backend
 ```
 
 ---
@@ -336,7 +336,7 @@ docker logs -f sentinelops-backend
 ### 5. Verify Ollama (if using local LLM)
 
 ```bash
-docker exec -it sentinelops-backend sh
+docker exec -it ZyntraOps-backend sh
 curl http://host.docker.internal:11434/api/tags
 ```
 
@@ -345,7 +345,7 @@ curl http://host.docker.internal:11434/api/tags
 ### 6. Verify Kubernetes Access
 
 ```bash
-docker exec -it sentinelops-backend sh
+docker exec -it ZyntraOps-backend sh
 kubectl get pods --all-namespaces
 ```
 
@@ -391,7 +391,7 @@ kubectl run crash-test \
   -- sh -c "exit 1"
 
 # Watch ZyntraOps detect, analyze, and respond in real time
-docker logs -f sentinelops-backend
+docker logs -f ZyntraOps-backend
 ```
 
 ---
